@@ -13,7 +13,8 @@ export function renderResult(result, userLevels, dimOrder, dimDefs, config) {
   // Kicker
   const kicker = document.getElementById('result-kicker')
   if (mode === 'drunk') kicker.textContent = '隐藏人格已激活'
-  else if (mode === 'fallback') kicker.textContent = '系统强制兜底'
+  else if (mode === 'burnout') kicker.textContent = '隐藏人格已激活'
+  else if (mode === 'unrecorded') kicker.textContent = '未收录人格触发'
   else kicker.textContent = '你的主类型'
 
   // 主类型
@@ -21,8 +22,9 @@ export function renderResult(result, userLevels, dimOrder, dimDefs, config) {
   document.getElementById('result-name').textContent = primary.cn
 
   // 匹配度
+  const totalDims = dimOrder.length
   document.getElementById('result-badge').textContent =
-    `匹配度 ${primary.similarity}%` + (primary.exact != null ? ` · 精准命中 ${primary.exact}/15 维` : '')
+    `匹配度 ${primary.similarity}%` + (primary.exact != null ? ` · 精准命中 ${primary.exact}/${totalDims} 维` : '')
 
   // Intro & 描述
   document.getElementById('result-intro').textContent = primary.intro || ''
@@ -30,7 +32,7 @@ export function renderResult(result, userLevels, dimOrder, dimDefs, config) {
 
   // 次要匹配
   const secEl = document.getElementById('result-secondary')
-  if (secondary && (mode === 'drunk' || mode === 'fallback')) {
+  if (secondary && (mode === 'drunk' || mode === 'burnout' || mode === 'unrecorded')) {
     secEl.style.display = ''
     document.getElementById('secondary-info').textContent =
       `${secondary.code}（${secondary.cn}）· 匹配度 ${secondary.similarity}%`

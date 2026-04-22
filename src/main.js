@@ -31,7 +31,11 @@ async function init() {
   function onQuizComplete(answers, isDrunk) {
     const scores = calcDimensionScores(answers, questions.main)
     const levels = scoresToLevels(scores, config.scoring.levelThresholds)
-    const result = determineResult(levels, dimensions.order, types.standard, types.special, { isDrunk })
+    const result = determineResult(levels, dimensions.order, types.standard, types.special, {
+      isDrunk,
+      maxDistance: config.scoring.maxDistance,
+      fallbackThreshold: config.scoring.fallbackThreshold,
+    })
     renderResult(result, levels, dimensions.order, dimensions.definitions, config)
     showPage('result')
   }

@@ -35,7 +35,12 @@ export async function generateShareImage(primary, userLevels, dimOrder, dimDefs,
   ctx.textAlign = 'center'
   ctx.font = '400 22px system-ui, "PingFang SC", "Microsoft YaHei", sans-serif'
   ctx.fillStyle = '#6b7b6e'
-  const kickerText = mode === 'drunk' ? '隐藏人格已激活' : mode === 'fallback' ? '系统强制兜底' : '你的主类型'
+  const kickerText =
+    mode === 'drunk' || mode === 'burnout'
+      ? '隐藏人格已激活'
+      : mode === 'unrecorded'
+      ? '未收录人格触发'
+      : '你的主类型'
   ctx.fillText(kickerText, W / 2, y)
   y += 56
 
@@ -52,7 +57,8 @@ export async function generateShareImage(primary, userLevels, dimOrder, dimDefs,
   y += 36
 
   // 匹配度徽章
-  const badgeText = `匹配度 ${primary.similarity}%` + (primary.exact != null ? ` · 精准命中 ${primary.exact}/15 维` : '')
+  const totalDims = dimOrder.length
+  const badgeText = `匹配度 ${primary.similarity}%` + (primary.exact != null ? ` · 精准命中 ${primary.exact}/${totalDims} 维` : '')
   ctx.font = '500 20px system-ui, "PingFang SC", "Microsoft YaHei", sans-serif'
   const badgeW = ctx.measureText(badgeText).width + 40
   roundRect(ctx, (W - badgeW) / 2, y - 16, badgeW, 36, 18)
