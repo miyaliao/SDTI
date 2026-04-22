@@ -14,12 +14,35 @@ export function renderResult(result, userLevels, dimOrder, dimDefs, config) {
   const kicker = document.getElementById('result-kicker')
   if (mode === 'drunk') kicker.textContent = '隐藏人格已激活'
   else if (mode === 'burnout') kicker.textContent = '隐藏人格已激活'
+  else if (mode === 'jing-fen') kicker.textContent = '隐藏人格已激活'
   else if (mode === 'unrecorded') kicker.textContent = '未收录人格触发'
   else kicker.textContent = '你的主类型'
 
   // 主类型
   document.getElementById('result-code').textContent = primary.code
   document.getElementById('result-name').textContent = primary.cn
+
+  // 人格图片（兼容 image / img 字段）
+  const imageWrap = document.getElementById('result-image-wrap')
+  const imageEl = document.getElementById('result-image')
+  const imageSrc = primary.image || primary.img || `/images/${primary.code}.png`
+  if (imageSrc) {
+    imageEl.onerror = () => {
+      imageEl.src = ''
+      imageWrap.style.display = 'none'
+    }
+    imageEl.onload = () => {
+      imageWrap.style.display = ''
+    }
+    imageEl.src = imageSrc
+    imageEl.alt = `${primary.cn || primary.code} 人格插画`
+  } else {
+    imageEl.src = ''
+    imageEl.alt = '人格插画'
+    imageEl.onerror = null
+    imageEl.onload = null
+    imageWrap.style.display = 'none'
+  }
 
   // 匹配度
   const totalDims = dimOrder.length
@@ -32,7 +55,7 @@ export function renderResult(result, userLevels, dimOrder, dimDefs, config) {
 
   // 次要匹配
   const secEl = document.getElementById('result-secondary')
-  if (secondary && (mode === 'drunk' || mode === 'burnout' || mode === 'unrecorded')) {
+  if (secondary && (mode === 'drunk' || mode === 'burnout' || mode === 'jing-fen' || mode === 'unrecorded')) {
     secEl.style.display = ''
     document.getElementById('secondary-info').textContent =
       `${secondary.code}（${secondary.cn}）· 匹配度 ${secondary.similarity}%`
