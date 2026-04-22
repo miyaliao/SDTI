@@ -89,15 +89,15 @@ npm run build
   "code": "YOUR",
   "pattern": "HHH-HMH-MHH-HHH-MHM",
   "cn": "你的类型名",
-  "image": "/images/YOUR.png",
+  "image": "images/YOUR.png",
   "intro": "一句话简介",
   "desc": "详细描述..."
 }
 ```
 
 - `image` 是可选字段，用于结果页展示人格图片，建议把图片放到项目根目录下的 `public/images/`。
-- 例如：`public/images/Juan-Wang.png`，则在 `types.json` 里填写 `"image": "/images/Juan-Wang.png"`。
-- 如果不写 `image`，程序会自动尝试加载 `/images/类型code.png`（例如 `Juan-Wang` 会尝试 `/images/Juan-Wang.png`）。
+- 例如：`public/images/Juan-Wang.png`，则在 `types.json` 里填写 `"image": "images/Juan-Wang.png"`（会基于 `import.meta.env.BASE_URL` 自动补全）。
+- 如果不写 `image`，程序会自动尝试加载 `images/类型code.png`（并基于 `import.meta.env.BASE_URL` 生成最终 URL）。
 
 `pattern` 是15个字母的L/M/H组合（按维度顺序：S1-S3, E1-E3, A1-A3, Ac1-Ac3, So1-So3），用 `-` 分隔每个模型。
 

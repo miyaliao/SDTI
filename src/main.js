@@ -36,8 +36,8 @@ async function init() {
       maxDistance: config.scoring.maxDistance,
       fallbackThreshold: config.scoring.fallbackThreshold,
     })
-    renderResult(result, levels, dimensions.order, dimensions.definitions, config)
     showPage('result')
+    renderResult(result, levels, dimensions.order, dimensions.definitions, config)
   }
 
   const quiz = createQuiz(questions, config, onQuizComplete)

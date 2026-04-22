@@ -5,10 +5,10 @@ import { shuffle, insertAtRandom, insertAfter } from './utils.js'
  */
 export function createQuiz(questions, config, onComplete) {
   const mainQuestions = shuffle(questions.main)
-  const drinkGateQ1 = questions.special.find((q) => q.id === config.drinkGate.questionId)
-  const drinkGateQ2 = questions.special.find((q) => q.id === 'drink_gate_q2')
+  // const drinkGateQ1 = questions.special.find((q) => q.id === config.drinkGate.questionId)
+  // const drinkGateQ2 = questions.special.find((q) => q.id === 'drink_gate_q2')
 
-  let queue = insertAtRandom(mainQuestions, drinkGateQ1)
+  let queue = insertAtRandom(mainQuestions)
   let current = 0
   let answers = {}
   let isDrunk = false
@@ -71,7 +71,7 @@ export function createQuiz(questions, config, onComplete) {
     current = 0
     answers = {}
     isDrunk = false
-    queue = insertAtRandom(shuffle(questions.main), drinkGateQ1)
+    queue = insertAtRandom(shuffle(questions.main))
     renderQuestion()
   }
 

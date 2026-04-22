@@ -59,7 +59,7 @@ function isLevelDistributionTooEven(userLevels, dimOrder) {
   const max = Math.max(...values)
   const min = Math.min(...values)
 
-  // 例如 13 维下的 5/4/4 也视为“过于平均”。
+  // 例如 15 维下的 5/5/5 或 6/5/4 也视为“过于平均”。
   return max - min <= 1
 }
 
@@ -171,11 +171,9 @@ export function determineResult(userLevels, dimOrder, standardTypes, specialType
 
   // 404：命中任一条件即触发
   const isLowSimilarity = best.similarity < fallbackThreshold
-  const topGap = second ? best.similarity - second.similarity : Infinity
-  const isTopGapTooClose = topGap < 3
   const isEvenMix = isLevelDistributionTooEven(userLevels, dimOrder)
 
-  if ((isLowSimilarity || isTopGapTooClose || isEvenMix) && unrecorded) {
+  if ((isLowSimilarity || isEvenMix) && unrecorded) {
     return {
       primary: { ...unrecorded, similarity: best.similarity, exact: best.exact },
       secondary: best,

@@ -25,17 +25,30 @@ export function renderResult(result, userLevels, dimOrder, dimDefs, config) {
   // 人格图片（兼容 image / img 字段）
   const imageWrap = document.getElementById('result-image-wrap')
   const imageEl = document.getElementById('result-image')
-  const imageSrc = primary.image || primary.img || `/images/${primary.code}.png`
+  const basePath = import.meta.env.BASE_URL
+  const rawImageSrc = primary.image || primary.img || `images/${primary.code}.png`
+  const imageSrc = rawImageSrc.startsWith('/images/')
+    ? `${basePath}images/${rawImageSrc.slice('/images/'.length)}`
+    : rawImageSrc.startsWith('images/')
+    ? `${basePath}${rawImageSrc}`
+    : rawImageSrc
   if (imageSrc) {
+    imageEl.loading = 'eager'
+    imageEl.removeAttribute('loading')
     imageEl.onerror = () => {
+      console.warn(`图片加载失败: ${imageSrc}`)
       imageEl.src = ''
       imageWrap.style.display = 'none'
     }
     imageEl.onload = () => {
       imageWrap.style.display = ''
     }
-    imageEl.src = imageSrc
     imageEl.alt = `${primary.cn || primary.code} 人格插画`
+    imageEl.src = ''
+    imageWrap.style.display = ''
+    requestAnimationFrame(() => {
+      imageEl.src = imageSrc
+    })
   } else {
     imageEl.src = ''
     imageEl.alt = '人格插画'
